@@ -22,7 +22,7 @@
  * @param {number[]} cost
  * @return {number}
  */
-const minCost = (nums, cost) => {
+const minCost_prefix = (nums, cost) => {
   const n = nums.length
   const numAndCost = nums.map((n, i) => [n, cost[i]]).sort(([a], [b]) => a - b)
   const prefixSum = numAndCost.map(((sum = 0), ([, n]) => (sum += n)))
@@ -48,6 +48,33 @@ const minCost = (nums, cost) => {
   return minCost
 }
 
+/**
+ * @param {number[]} nums
+ * @param {number[]} cost
+ * @return {number}
+ */
+const minCost_binSearch = (nums, cost) => {
+  const n = nums.length
+
+  const getCost = (base) => {
+    let result = 0
+    for (i = 0; i < n; i++) {
+      result += Math.abs(nums[i] - base) * cost[i]
+    }
+    return result
+  }
+
+  let lo = Math.min(...nums)
+  let hi = Math.max(...nums)
+  while (lo < hi) {
+    const mid = Math.floor((lo + hi) / 2)
+    if (getCost(mid) > getCost(mid + 1)) lo = mid + 1
+    else hi = mid
+  }
+
+  return getCost(lo)
+}
+
 nums = [1, 3, 5, 2]
 cost = [2, 3, 1, 14]
 // Expected: 8
@@ -56,4 +83,5 @@ nums = [2, 2, 2, 2, 2]
 cost = [4, 2, 8, 1, 3]
 // Expected: 0
 
-console.log(minCost(nums, cost))
+console.log(minCost_prefix(nums, cost))
+console.log(minCost_binSearch(nums, cost))
