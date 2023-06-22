@@ -31,6 +31,13 @@ const minCost_prefix = (nums, cost) => {}
  */
 const minCost_binSearch = (nums, cost) => {}
 
+/**
+ * @param {number[]} nums
+ * @param {number[]} cost
+ * @return {number}
+ */
+const minCost_weightedMedian = (nums, cost) => {}
+
 nums = [1, 3, 5, 2]
 cost = [2, 3, 1, 14]
 // Expected: 8

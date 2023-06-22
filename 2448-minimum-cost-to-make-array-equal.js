@@ -75,6 +75,27 @@ const minCost_binSearch = (nums, cost) => {
   return getCost(lo)
 }
 
+/**
+ * @param {number[]} nums
+ * @param {number[]} cost
+ * @return {number}
+ */
+const minCost_weightedMedian = (nums, cost) => {
+  const numsAndCost = nums.map((n, i) => [n, cost[i]]).sort(([a], [b]) => a - b)
+  medianCost = cost.reduce((acc, n) => (acc += n)) / 2
+  let accCost = 0
+  for (const [n, c] of numsAndCost) {
+    accCost += c
+    if (accCost >= medianCost) {
+      const base = n
+      return numsAndCost.reduce(
+        (acc, [n, c]) => acc + Math.abs(n - base) * c,
+        (acc = 0)
+      )
+    }
+  }
+}
+
 nums = [1, 3, 5, 2]
 cost = [2, 3, 1, 14]
 // Expected: 8
@@ -85,3 +106,4 @@ cost = [4, 2, 8, 1, 3]
 
 console.log(minCost_prefix(nums, cost))
 console.log(minCost_binSearch(nums, cost))
+console.log(minCost_weightedMedian(nums, cost))
