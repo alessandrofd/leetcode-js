@@ -23,15 +23,36 @@
  * @param {number[]} nums
  * @return {string[]}
  */
-const summaryRanges = (nums) => {}
+const summaryRanges = (nums) => {
+  const n = nums.length
+  const result = []
+
+  if (n === 0) return result
+
+  let start = 0
+
+  for (let i = 1; i < n; i++) {
+    if (nums[i] === nums[i - 1] + 1) continue
+
+    if (start === i - 1) result.push(nums[start].toString())
+    else result.push(`${nums[start]}->${nums[i - 1]}`)
+
+    start = i
+  }
+
+  if (start === n - 1) result.push(nums[start].toString())
+  else result.push(`${nums[start]}->${nums[n - 1]}`)
+
+  return result
+}
 
 nums = [0, 1, 2, 4, 5, 7]
 // Expected: ["0->2","4->5","7"]
 
-nums = [0, 2, 3, 4, 6, 8, 9]
+// nums = [0, 2, 3, 4, 6, 8, 9]
 // Expected: ["0","2->4","6","8->9"]
 
-nums = []
+// nums = []
 // Expected: []
 
 console.log(summaryRanges(nums))
