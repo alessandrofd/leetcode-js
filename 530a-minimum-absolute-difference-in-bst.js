@@ -3,7 +3,7 @@
  * difference between the values of any two different nodes in the tree.
  *
  * Constraints:
- *    The number of nodes in the tree is in the range [2, 104].
+ *    The number of nodes in the tree is in the range [2, 10^4].
  *    0 <= Node.val <= 10^5
  */
 
@@ -43,12 +43,29 @@ const buildTree = (array) => {
  * @param {TreeNode} root
  * @return {number}
  */
-const getMinimumDifference = (root) => {}
+const getMinimumDifference = (root) => {
+  let minDiff = 1e5
+  let prevNode
+
+  const inorderTraversal = (node) => {
+    if (!node) return
+
+    inorderTraversal(node.left)
+
+    if (prevNode) minDiff = Math.min(minDiff, node.val - prevNode.val)
+    prevNode = node
+
+    inorderTraversal(node.right)
+  }
+
+  inorderTraversal(root)
+  return minDiff
+}
 
 array = [4, 2, 6, 1, 3]
 // Expected: 1
 
-array = [1, 0, 48, null, null, 12, 49]
+// array = [1, 0, 48, null, null, 12, 49]
 // Expected: 1
 
 root = buildTree(array)
