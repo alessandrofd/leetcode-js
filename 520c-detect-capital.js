@@ -18,17 +18,29 @@
 
 // Top submission: Whole word
 const detectCapitalUse_wholeWord = (word) => {
-  // const detectCapitalUse = (word) => {
+  if (word.length === 1) return true
+  if (word.toLowerCase() === word) return true
+  if (word.toUpperCase() === word) return true
+  if (word.slice(1).toLowerCase() == word.slice(1)) return true
+  return false
 }
 
 // Approach 1: Character by Character
 const detectCapitalUse_character = (word) => {
-  // const detectCapitalUse = (word) => {
+  if (word.length === 1) return true
+
+  const isLowerCase = (c) => c.toLowerCase() === c
+
+  const start = isLowerCase(word[0]) ? 0 : 1
+  const rightCase = isLowerCase(word[start])
+  for (let i = start + 1; i < word.length; i++)
+    if (isLowerCase(word[i]) !== rightCase) return false
+
+  return true
 }
 
 // Approach 2: Regex
-// const detectCapitalUse_regex = (word) => {
-const detectCapitalUse = (word) => {}
+const detectCapitalUse_regex = (word) => /^[A-Z]+$|^[A-Z]?[a-z]+$/.test(word)
 
 word = 'USA'
 // Output: true
@@ -36,10 +48,12 @@ word = 'USA'
 // word = 'FlaG'
 // Output: false
 
-word = 'Leetcode'
+// word = 'Leetcode'
 // Output: true
 
-word = 'g'
+// word = 'g'
 // Output: true
 
-console.log(detectCapitalUse(word))
+console.log(detectCapitalUse_wholeWord(word))
+console.log(detectCapitalUse_character(word))
+console.log(detectCapitalUse_regex(word))
