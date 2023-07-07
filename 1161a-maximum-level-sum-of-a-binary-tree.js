@@ -46,13 +46,65 @@ const buildTree = (array) => {
  * @param {TreeNode} root
  * @return {number}
  */
-const maxLevelSum_dfs = (root) => {}
+const maxLevelSum_dfs = (root) => {
+  const levels = []
+
+  const dfs = (node, level) => {
+    if (!node) return
+
+    levels[level] = (levels[level] ?? 0) + node.val
+    dfs(node.left, level + 1)
+    dfs(node.right, level + 1)
+  }
+
+  dfs(root, 1)
+
+  let maxSum = -Infinity
+  let level = 0
+  for (let i = 1; i < levels.length; i++) {
+    if (levels[i] > maxSum) {
+      maxSum = levels[i]
+      level = i
+    }
+  }
+
+  return level
+}
 
 /**
  * @param {TreeNode} root
  * @return {number}
  */
-const maxLevelSum_bfs = (root) => {}
+const maxLevelSum_bfs = (root) => {
+  let maxSum = -Infinity
+  let maxLevel = 0
+
+  const queue = [root]
+  let level = 1
+
+  while (queue.length) {
+    const n = queue.length
+    let levelSum = 0
+    for (let i = 0; i < n; i++) {
+      const node = queue.shift()
+      if (!node) continue
+
+      levelSum += node.val
+
+      queue.push(node.left)
+      queue.push(node.right)
+    }
+
+    if (maxSum < levelSum) {
+      maxSum = levelSum
+      maxLevel = level
+    }
+
+    level += 1
+  }
+
+  return maxLevel
+}
 
 array = [1, 7, 0, 7, -8, null, null]
 // Expected: 2
