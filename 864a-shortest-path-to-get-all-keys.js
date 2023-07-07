@@ -41,7 +41,60 @@
  * @return {number}
  */
 
-const shortestPathAllKeys = (grid) => {}
+const shortestPathAllKeys = (grid) => {
+  const hash = (char) => 1 << ((char.charCodeAt() & 31) - 1)
+  const isKey = (char) => /[abcdef]/.test(char)
+  const isLock = (char) => /[ABCEDEF]/.test(char)
+  const isLocked = (char, keys) => isLock(char) && !(hash(char) & keys)
+
+  const rows = grid.length
+  const cols = grid[0].length
+
+  const queue = []
+  let countKeys = 0
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (grid[row][col] === '@') queue.push([row, col, 0, 0])
+      else if (isKey(grid[row][col])) countKeys += 1
+    }
+  }
+
+  const allKeys = 2 ** countKeys - 1
+
+  // prettier-ignore
+  const moves = [[-1, 0], [0, 1], [1, 0], [0, -1]]
+  const visited = Array.from(Array(rows), () =>
+    Array.from(Array(cols), () => [])
+  )
+
+  while (queue.length) {
+    let [row, col, keys, distance] = queue.shift()
+
+    if (
+      row < 0 ||
+      row >= rows ||
+      col < 0 ||
+      col >= cols ||
+      visited[row][col][keys] ||
+      grid[row][col] === '#' ||
+      isLocked(grid[row][col], keys)
+    )
+      continue
+
+    visited[row][col][keys] = true
+
+    if (isKey(grid[row][col])) {
+      keys |= hash(grid[row][col])
+      if (keys === allKeys) return distance
+    }
+
+    for (const [moveRow, moveCol] of moves)
+      queue.push([row + moveRow, col + moveCol, keys, distance + 1])
+  }
+
+  return -1
+}
 
 grid = ['@.a..', '###.#', 'b.A.B']
 // Expected: 8
