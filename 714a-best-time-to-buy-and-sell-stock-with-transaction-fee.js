@@ -20,9 +20,33 @@
  * @param {number} fee
  * @return {number}
  */
-var maxProfit_dp = (prices, fee) => {}
+var maxProfit_dp = (prices, fee) => {
+  const n = prices.length
+  const dp = new Array(n).fill().map((_) => Array(2).fill(-Infinity))
+  dp[0][0] = 0
+  dp[0][1] = -prices[0]
 
-var maxProfit_dp_optimized = (prices, fee) => {}
+  for (let i = 1; i < n; i++) {
+    dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i] - fee)
+    dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i])
+  }
+
+  return dp[n - 1][0]
+}
+
+var maxProfit_dp_optimized = (prices, fee) => {
+  const n = prices.length
+  let sold = 0
+  let bought = -prices[0]
+
+  for (let i = 1; i < n; i++) {
+    temp = Math.max(sold, bought + prices[i] - fee)
+    bought = Math.max(bought, sold - prices[i])
+    sold = temp
+  }
+
+  return sold
+}
 
 prices = [1, 3, 2, 8, 4, 9]
 fee = 2
