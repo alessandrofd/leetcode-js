@@ -24,22 +24,49 @@
  * @param {number[]} nums
  * @return {number}
  */
-const numOfWays = (nums) => {}
+const numOfWays = (nums) => {
+  const MOD = BigInt(1e9 + 7)
+
+  const factCache = new Map()
+  const factorial = (n) => {
+    if (n < 2) return 1n
+    if (factCache.has(n)) return factCache.get(n)
+    const result = BigInt(n) * factorial(n - 1)
+    factCache.set(n, result)
+    return result
+  }
+
+  const permutations = (n, k) => factorial(n) / factorial(n - k) / factorial(k)
+
+  const dfs = (nums) => {
+    const n = nums.length
+    if (n < 3) return 1n
+
+    const root = nums[0]
+    const left = nums.filter((n) => n < root)
+    const right = nums.filter((n) => n > root)
+
+    const k = left.length
+    return BigInt(permutations(n - 1, k) * dfs(left) * dfs(right))
+  }
+
+  return (dfs(nums) - 1n) % MOD
+}
 
 nums = [2, 1, 3]
 // Expected: 1
 
-// nums = [3, 4, 5, 1, 2]
+nums = [3, 4, 5, 1, 2]
 // // Expected: 5
 
-// nums = [1, 2, 3]
+nums = [1, 2, 3]
 // Expected: 0
 
-// nums = [
-//   10, 23, 12, 18, 4, 29, 2, 8, 41, 31, 25, 21, 14, 35, 26, 5, 19, 43, 22, 37, 9,
-//   20, 44, 28, 1, 39, 30, 38, 36, 6, 13, 16, 27, 17, 34, 7, 15, 3, 11, 24, 42,
-//   33, 40, 32,
-// ]
+nums = [
+  10, 23, 12, 18, 4, 29, 2, 8, 41, 31, 25, 21, 14, 35, 26, 5, 19, 43, 22, 37, 9,
+  20, 44, 28, 1, 39, 30, 38, 36, 6, 13, 16, 27, 17, 34, 7, 15, 3, 11, 24, 42,
+  33, 40, 32,
+]
 // Expected: 182440977
 
 console.log(numOfWays(nums))
