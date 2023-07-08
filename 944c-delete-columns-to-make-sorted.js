@@ -28,15 +28,55 @@
  * @return {number}
  */
 // Approach 1: Matrix Traversing
-const minDeletionSize = (strs) => {}
+const minDeletionSize = (strs) => {
+  const rows = strs.length
+  const cols = strs[0].length
+
+  const traversed = Array.from(Array(cols), () => Array(rows))
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      traversed[col][row] = strs[row][col]
+    }
+  }
+
+  let deletes = 0
+
+  for (let row = 0; row < cols; row++) {
+    const original = traversed[row].join('')
+    const sorted = traversed[row].sort().join('')
+    if (original !== sorted) deletes += 1
+  }
+
+  return deletes
+}
+
+const minDeletionSize_one_pass = (strs) => {
+  const rows = strs.length
+  const cols = strs[0].length
+
+  let deletes = 0
+
+  for (let col = 0; col < cols; col++) {
+    for (let row = 1; row < rows; row++) {
+      if (strs[row][col] < strs[row - 1][col]) {
+        deletes += 1
+        break
+      }
+    }
+  }
+
+  return deletes
+}
 
 strs = ['cba', 'daf', 'ghi']
 // Output: 1
 
-strs = ['a', 'b']
+// strs = ['a', 'b']
 // Output: 0
 
-strs = ['zyx', 'wvu', 'tsr']
+// strs = ['zyx', 'wvu', 'tsr']
 // Output: 3
 
 console.log(minDeletionSize(strs))
+console.log(minDeletionSize_one_pass(strs))
