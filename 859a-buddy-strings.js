@@ -17,14 +17,33 @@
  * @param {string} goal
  * @return {boolean}
  */
-const buddyStrings = (s, goal) => {}
+const buddyStrings = (s, goal) => {
+  if (s.length === 1) return false
+  if (s.length !== goal.length) return false
+
+  if (s === goal) {
+    const set = new Set(s)
+    if (set.size === s.length) return false
+    return true
+  }
+
+  diffs = []
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] !== goal[i]) {
+      if (diffs.length === 2) return false
+      diffs.push([s[i], goal[i]])
+    }
+  }
+
+  return diffs.length == 2 && diffs[0].join('') === diffs[1].reverse().join('')
+}
 
 s = 'ab'
 goal = 'ba'
 // Expected: true
 
-// s = 'ab'
-// goal = 'ab'
+s = 'ab'
+goal = 'ab'
 // Expected: false
 
 // s = 'aa'
