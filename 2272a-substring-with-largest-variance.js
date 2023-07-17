@@ -29,7 +29,38 @@
  * @param {string} s
  * @return {number}
  */
-const largestVariance = (s) => {}
+const largestVariance = (s) => {
+  const codes = Array.from(s, (l) => l.charCodeAt() - 97)
+  const freqs = Array(26).fill(0)
+  for (const code of codes) freqs[code] += 1
+
+  let maxVariance = 0
+
+  for (let i = 0; i < 26; i++) {
+    for (let j = 0; j < 26; j++) {
+      if (i === j || freqs[i] === 0 || freqs[j] === 0) continue
+
+      let countI = 0
+      let countJ = 0
+      let restJ = freqs[j]
+
+      for (const code of codes) {
+        if (code === i) countI += 1
+        if (code === j) {
+          countJ += 1
+          restJ -= 1
+        }
+
+        const variance = countI - countJ
+
+        if (countJ > 0) maxVariance = Math.max(maxVariance, variance)
+        if (variance < 0 && restJ > 0) countI = countJ = 0
+      }
+    }
+  }
+
+  return maxVariance
+}
 
 // Podemos otimizar a solução filtrando apenas as ocorrências das letras da dupla
 // que estamos analizando.
@@ -38,15 +69,57 @@ const largestVariance = (s) => {}
  * @param {string} s
  * @return {number}
  */
-const largestVariance_filtered = (s) => {}
+const largestVariance_filtered = (s) => {
+  const codes = Array.from(s, (l) => l.charCodeAt() - 97)
+  const freqs = Array(26).fill(0)
+  const idxs = new Array(26).fill().map((_) => [])
+
+  for (let i = 0; i < codes.length; i++) {
+    const code = codes[i]
+    freqs[code] += 1
+    idxs[code].push([i, code])
+  }
+
+  let maxVariance = 0
+
+  for (let i = 0; i < 26; i++) {
+    for (let j = 0; j < 26; j++) {
+      if (i === j || freqs[i] === 0 || freqs[j] === 0) continue
+
+      let countI = 0
+      let countJ = 0
+      let restJ = freqs[j]
+
+      const filtered = idxs[i]
+        .concat(idxs[j])
+        .sort(([a], [b]) => a - b)
+        .map(([_, code]) => code)
+
+      for (const code of filtered) {
+        if (code === i) countI += 1
+        if (code === j) {
+          countJ += 1
+          restJ -= 1
+        }
+
+        variance = countI - countJ
+
+        if (countJ > 0) maxVariance = Math.max(maxVariance, variance)
+        if (variance < 0 && restJ > 0) countI = countJ = 0
+      }
+    }
+  }
+
+  return maxVariance
+}
 
 s = 'aababbb'
 // Expected: 3
 
-s = 'abcde'
+// s = 'abcde'
 // Expected: 0
 
-s = 'abbaaabzaabaaaaaaaaaaaaa'
+// s = 'abbaaabzaabaaaaaaaaaaaaa'
 // Expected: 18
 
 console.log(largestVariance(s))
