@@ -34,6 +34,8 @@
  */
 var countRoutes_DP_TopDown = function (locations, start, finish, fuel) {}
 
+// O único valor que é somado repetidamente é o 1 do dp[finish]
+
 /**
  * @param {number[]} locations
  * @param {number} start
@@ -41,7 +43,30 @@ var countRoutes_DP_TopDown = function (locations, start, finish, fuel) {}
  * @param {number} fuel
  * @return {number}
  */
-var countRoutes_DP_BottomUp = function (locations, start, finish, fuel) {}
+const countRoutes_DP_BottomUp = (locations, start, finish, fuel) => {
+  const n = locations.length
+  const dp = Array(n)
+    .fill()
+    .map((_) => Array(fuel + 1).fill(0))
+  dp[finish] = Array(fuel + 1).fill(1)
+
+  for (let fuelLeft = 0; fuelLeft <= fuel; fuelLeft++) {
+    for (let origin = 0; origin < n; origin++) {
+      for (let destination = 0; destination < n; destination++) {
+        if (origin == destination) continue
+
+        const fuelCost = Math.abs(locations[origin] - locations[destination])
+        if (fuelCost > fuelLeft) continue
+
+        dp[origin][fuelLeft] =
+          (dp[origin][fuelLeft] + dp[destination][fuelLeft - fuelCost]) %
+          (1e9 + 7)
+      }
+    }
+  }
+
+  return dp[start][fuel]
+}
 
 locations = [2, 3, 6, 8, 4]
 start = 1
@@ -49,23 +74,23 @@ finish = 3
 fuel = 5
 // Expected: 4
 
-// locations = [4, 3, 1]
-// start = 1
-// finish = 0
-// fuel = 6
+locations = [4, 3, 1]
+start = 1
+finish = 0
+fuel = 6
 // Expected: 5
 
-// locations = [5, 2, 1]
-// start = 0
-// finish = 2
-// fuel = 3
+locations = [5, 2, 1]
+start = 0
+finish = 2
+fuel = 3
 // Expected: 0
 
-// locations = [2, 1, 5]
-// start = 0
-// finish = 0
-// fuel = 3
+locations = [2, 1, 5]
+start = 0
+finish = 0
+fuel = 3
 // Expected: 2
 
-console.log(countRoutes_DP_TopDown(locations, start, finish, fuel))
+// console.log(countRoutes_DP_TopDown(locations, start, finish, fuel))
 console.log(countRoutes_DP_BottomUp(locations, start, finish, fuel))
