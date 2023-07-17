@@ -30,21 +30,52 @@
  * @param {number[][]} requests
  * @return {number}
  */
-const maximumRequests = (numBuildings, requests) => {}
+const maximumRequests = (numBuildings, requests) => {
+  const numRequests = requests.length
+  const balance = Array(numBuildings).fill(0)
+
+  let maxRequests = 0
+
+  const backtrack = (request, acceptedRequests) => {
+    if (request == numRequests) {
+      if (balance.every((n) => n == 0)) {
+        maxRequests = Math.max(maxRequests, acceptedRequests)
+      }
+      return
+    }
+
+    // deny request
+    backtrack(request + 1, acceptedRequests)
+
+    // accept request
+    const [from, to] = requests[request]
+
+    balance[from] -= 1
+    balance[to] += 1
+
+    backtrack(request + 1, acceptedRequests + 1)
+
+    balance[from] += 1
+    balance[to] -= 1
+  }
+
+  backtrack(0, 0)
+  return maxRequests
+}
 
 n = 5
 // prettier-ignore
 requests = [[0,1],[1,0],[0,1],[1,2],[2,0],[3,4]]
 //Expected : 5
 
-n = 3
-// prettier-ignore
-requests = [[0,0],[1,2],[2,1]]
+// n = 3
+// // prettier-ignore
+// requests = [[0,0],[1,2],[2,1]]
 //Expected : 3
 
-n = 4
+// n = 4
 // prettier-ignore
-requests = [[0,3],[3,1],[1,2],[2,0]]
+// requests = [[0,3],[3,1],[1,2],[2,0]]
 //Expected : 4
 
 console.log(maximumRequests(n, requests))
