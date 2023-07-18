@@ -43,7 +43,32 @@ import { PriorityQueue } from '@datastructures-js/priority-queue'
  */
 const totalCost_2Queues = (costs, k, candidates) => {}
 
-const totalCost_1Queue = (costs, k, candidates) => {}
+const totalCost_1Queue = (costs, k, candidates) => {
+  const n = costs.length
+
+  const pq = new PriorityQueue({
+    compare: (a, b) => (a[0] === b[0] ? a[1] - b[1] : a[0] - b[0]),
+  })
+
+  let left = candidates
+  for (let i = 0; i < left; i++) pq.enqueue([costs[i], 0])
+
+  let right = Math.max(n - candidates, candidates) - 1
+  for (let i = n - 1; i > right; i--) pq.enqueue([costs[i], 1])
+
+  let totalCost = 0
+  while (k) {
+    const [cost, side] = pq.dequeue()
+    totalCost += cost
+    k -= 1
+    if (left <= right) {
+      if (side === 0) pq.enqueue([costs[left++], 0])
+      else pq.enqueue([costs[right--], 1])
+    }
+  }
+
+  return totalCost
+}
 
 let costs = [17, 12, 10, 2, 7, 2, 11, 20, 8]
 let k = 3
