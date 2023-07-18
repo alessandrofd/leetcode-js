@@ -47,12 +47,27 @@ const buildTree = (array) => {
  * @param {TreeNode} root
  * @return {number}
  */
-const minDepth = (root) => {}
+const minDepth = (root) => {
+  if (!root) return 0
+
+  const queue = [root]
+  let depth = 0
+  while (queue.length) {
+    depth += 1
+    const queueLen = queue.length
+    for (let i = 0; i < queueLen; i++) {
+      const node = queue.shift()
+      if (!(node.left || node.right)) return depth
+      if (node.left) queue.push(node.left)
+      if (node.right) queue.push(node.right)
+    }
+  }
+}
 
 array = [3, 9, 20, null, null, 15, 7]
 // Expected: 2
 
-// array = [2, null, 3, null, 4, null, 5, null, 6]
+array = [2, null, 3, null, 4, null, 5, null, 6]
 // Expected: 5
 
 const root = buildTree(array)
