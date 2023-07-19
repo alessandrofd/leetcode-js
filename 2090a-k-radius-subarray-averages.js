@@ -27,7 +27,19 @@
  * @param {number} k
  * @return {number[]}
  */
-const getAverages = (nums, k) => {}
+const getAverages = (nums, k) => {
+  const n = nums.length
+  const prefixSum = Array.from(nums, ((sum = 0), (n) => (sum += n)))
+  const result = Array(n).fill(-1)
+
+  for (let i = k; i < n - k; i++) {
+    const left = i > k ? prefixSum[i - (k + 1)] : 0
+    window = prefixSum[i + k] - left
+    result[i] = Math.floor(window / (2 * k + 1))
+  }
+
+  return result
+}
 
 nums = [7, 4, 3, 9, 1, 8, 5, 2, 6]
 k = 3

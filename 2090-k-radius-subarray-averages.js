@@ -22,8 +22,6 @@
  *    0 <= nums[i], k <= 10^5
  */
 
-const { result } = require('lodash')
-
 /**
  * @param {number[]} nums
  * @param {number} k
