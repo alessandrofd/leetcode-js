@@ -22,12 +22,22 @@
  * @param {number[]} nums
  * @return {number}
  */
-https: var singleNumber = function (nums) {}
+https: var singleNumber = function (nums) {
+  let ones = 0
+  let twos = 0
+
+  for (const num of nums) {
+    ones = (ones ^ num) & ~twos
+    twos = (twos ^ num) & ~ones
+  }
+
+  return ones
+}
 
 nums = [2, 2, 3, 2]
 // Output: 3
 
-// nums = [0, 1, 0, 1, 0, 1, 99]
+nums = [0, 1, 0, 1, 0, 1, 99]
 // Output: 99
 
 console.log(singleNumber(nums))
