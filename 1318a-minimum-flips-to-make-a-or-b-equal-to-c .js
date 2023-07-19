@@ -25,7 +25,15 @@
  * @param {number} c
  * @return {number}
  */
-const minFlips = (a, b, c) => {}
+const minFlips = (a, b, c) => {
+  const bitCount = (x) => {
+    let count
+    for (count = 0; x; count++) x &= x - 1
+    return count
+  }
+
+  return bitCount((a | b) ^ c) + bitCount(a & b & ~c)
+}
 
 a = 2
 b = 6
@@ -53,7 +61,7 @@ c = 8
 // Expected: 4
 
 console.log(minFlips(a, b, c))
-console.log(minFlips_optimized(a, b, c))
+// console.log(minFlips_optimized(a, b, c))
 
 console.log(Math.ceil(Math.log2(5)))
 a = 0b010
