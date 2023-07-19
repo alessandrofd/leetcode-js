@@ -51,16 +51,54 @@ const buildTree = (array) => {
  * @param {number} k
  * @return {number[]}
  */
-const distanceK = (root, target, k) => {}
+const distanceK = (root, target, k) => {
+  const graph = new Map()
+
+  const buildGraph = (node, parent) => {
+    if (!node) return
+
+    if (node && parent) {
+      graph.get(parent.val).push(node.val)
+
+      if (!graph.has(node.val)) graph.set(node.val, [])
+      graph.get(node.val).push(parent.val)
+    }
+
+    buildGraph(node.left, node)
+    buildGraph(node.right, node)
+  }
+
+  graph.set(root.val, [])
+  buildGraph(root, null)
+
+  const queue = [target]
+  const visited = new Set()
+
+  let distance = 0
+  while (distance < k) {
+    const n = queue.length
+    for (let i = 0; i < n; i++) {
+      node = queue.shift()
+      visited.add(node)
+      for (const neighbor of graph.get(node)) {
+        if (visited.has(neighbor)) continue
+        queue.push(neighbor)
+      }
+    }
+    distance += 1
+  }
+
+  return queue
+}
 
 array = [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4]
 target = 5
 k = 2
 // Expected: [7,4,1]
 
-// array = [1]
-// target = 1
-// k = 3
+array = [1]
+target = 1
+k = 3
 // Expected: []
 
 root = buildTree(array)
