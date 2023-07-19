@@ -46,7 +46,7 @@ const kSmallestPairs_kSquared = (nums1, nums2, k) => {
 }
 
 // Utiliza uma fila de prioridades min. Seleciona-se o primeiro elemento da fila,
-// caracterizado pelos índices de cada um dos vetores nums1 e nums1, e insere
+// caracterizado pelos índices de cada um dos vetores nums1 e nums2, e insere
 // a tupla na resposta. Avança os índices um de cada vez e enfileira
 // a combinação caso já não tenha sido. Essas operação são repetidas k vezes ou
 // até que a fila se esvazie.
