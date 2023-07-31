@@ -49,17 +49,7 @@
  * @return {number}
  */
 
-const minDistance_lcs = (word1, word2) => {
-  const m = word1.length
-  const n = word2.length
-
-  const lcs = (m, n) => {
-    if (m === 0 || n === 0) return 0
-    if (word1[m - 1] === word2[n - 1]) return 1 + lcs(m - 1, n - 1)
-    else return Math.max(lcs(m - 1, n), lcs(m, n - 1))
-  }
-  return m + n - 2 * lcs(m, n)
-}
+const minDistance_lcs = (word1, word2) => {}
 
 // Approach #2 Longest Common Subsequence with Memoization [Accepted]
 
@@ -69,25 +59,7 @@ const minDistance_lcs = (word1, word2) => {
  * @return {number}
  */
 
-const minDistance_lcs_memo = (word1, word2) => {
-  const m = word1.length
-  const n = word2.length
-
-  const memo = new Array(m + 1).fill().map(() => new Array(n + 1))
-
-  const lcs = (m, n) => {
-    if (m === 0 || n === 0) return 0
-
-    if (memo[m][n]) return memo[m][n]
-
-    if (word1[m - 1] === word2[n - 1]) memo[m][n] = 1 + lcs(m - 1, n - 1)
-    else memo[m][n] = Math.max(lcs(m - 1, n), lcs(m, n - 1))
-
-    return memo[m][n]
-  }
-
-  return m + n - 2 * lcs(m, n)
-}
+const minDistance_lcs_memo = (word1, word2) => {}
 
 /**
  * Approach #3 Using Longest Common Subsequence- Dynamic Programming [Accepted]
@@ -136,21 +108,7 @@ const minDistance_lcs_memo = (word1, word2) => {
  * @param {string} word2
  * @return {number}
  */
-const minDistance_lcs_bottom_up_dp = (word1, word2) => {
-  const m = word1.length
-  const n = word2.length
-
-  const dp = new Array(m + 1).fill().map(() => new Array(n + 1).fill(0))
-
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      if (word1[i - 1] === word2[j - 1]) dp[i][j] = 1 + dp[i - 1][j - 1]
-      else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
-    }
-  }
-
-  return m + n - 2 * dp[m][n]
-}
+const minDistance_lcs_bottom_up_dp = (word1, word2) => {}
 
 /**
  * Approach #4 Without using LCS Dynamic Programmming [Accepted]:
@@ -188,22 +146,7 @@ const minDistance_lcs_bottom_up_dp = (word1, word2) => {
  * @param {string} word2
  * @return {number}
  */
-const minDistance_deletes_bottom_up_dp = (word1, word2) => {
-  const m = word1.length
-  const n = word2.length
-
-  const dp = new Array(m + 1).fill().map(() => new Array(n + 1))
-
-  for (let i = 0; i <= m; i++) {
-    for (let j = 0; j <= n; j++) {
-      if (i === 0 || j === 0) dp[i][j] = i + j
-      else if (word1[i - 1] === word2[j - 1]) dp[i][j] = dp[i - 1][j - 1]
-      else dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1])
-    }
-  }
-
-  return dp[m][n]
-}
+const minDistance_deletes_bottom_up_dp = (word1, word2) => {}
 
 /**
  * Approach #5 1-D Dynamic Programming [Accepted]:
@@ -229,24 +172,7 @@ const minDistance_deletes_bottom_up_dp = (word1, word2) => {
  * @return {number}
  */
 
-const minDistance_deletes_bottom_up_1D_dp = (word1, word2) => {
-  const m = word1.length
-  const n = word2.length
-
-  let dp = new Array(n + 1)
-
-  for (let i = 0; i <= word1.length; i++) {
-    const temp = new Array(n + 1)
-    for (let j = 0; j <= word2.length; j++) {
-      if (i === 0 || j === 0) temp[j] = i + j
-      else if (word1[i - 1] === word2[j - 1]) temp[j] = dp[j - 1]
-      else temp[j] = 1 + Math.min(dp[j], temp[j - 1])
-    }
-    dp = temp
-    console.log(dp)
-  }
-  return dp[n]
-}
+const minDistance_deletes_bottom_up_1D_dp = (word1, word2) => {}
 
 word1 = 'sea'
 word2 = 'eat'
