@@ -21,6 +21,9 @@
  */
 
 /**
+ * O problema é uma extensão do '33. Search in rotated sorted array' com a
+ * diferença que permite números repetidos.
+ *
  * Como há a possibilidade de números repetidos, é possivel que as
  * comparações abaixo envolvam números que tenham sido rotacionados e outros
  * que não. Logo, temos que colapsar os números rotacionados para que
