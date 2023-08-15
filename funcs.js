@@ -133,19 +133,14 @@ class ListNode {
 const buildLinkedList = (arr) => {
   if (!arr.length) return null
 
-  const head = new ListNode(arr.shift())
-  const indexedNodes = [head]
+  const before = new ListNode()
+  let node = before
 
-  let prev = head
   while (arr.length) {
-    const node = new ListNode(arr.shift())
-    indexedNodes.push(node)
-    prev.next = node
-    prev = node
+    node.next = new ListNode(arr.shift())
+    node = node.next
   }
-
-  if (pos >= 0) prev.next = indexedNodes[pos]
-  return head
+  return before.next
 }
 
 const destroyLinkedList = (head) => {
