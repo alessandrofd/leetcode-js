@@ -11,21 +11,24 @@
  * @param {string} s
  * @return {boolean}
  */
-const repeatedSubstringPattern = (s) => /^(.*)\1+$/.test(s)
+const repeatedSubstringPattern = (s) => {}
 
 s = 'abab'
 // Expected: true
 
-// s = 'aba'
+s = 'aba'
 // Expected: false
 
-// s = 'abcabcabcabc'
+s = 'abcabcabcabc'
 // Expected: true
 
-// s = 'ababba'
-// Expected: false
+s = 'abcabcabcabc'
+// Expected:
 
-// s = 'babbabbabbabbab'
-// Expected: true
+s = 'ababba'
+// Expected:
 
-console.log(repeatedSubstringPattern(s))
+s = 'babbabbabbabbab'
+// Expected:
+
+console.log(repeatedSubstringPattern('abab'))
