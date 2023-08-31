@@ -85,6 +85,9 @@ const minTaps_dp = (n, ranges) => {
   return dp[n] === Infinity ? -1 : dp[n]
 }
 
+exports.minTaps_dp = minTaps_dp
+exports.minTaps_greedy = minTaps_greedy
+
 // prettier-ignore
 const funcs = [
   minTaps_greedy,
