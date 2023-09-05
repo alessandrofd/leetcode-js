@@ -104,24 +104,24 @@ const arraysEqual = (a, b) => {
  */
 
 const copyRandomList = (head) => {
-  if (head === null) return null
-
   const map = new Map()
-  let copy = null,
-    previous = null
 
-  for (current = head; current !== null; current = current.next) {
-    const next = new Node(current.val, null, current.random)
-    map.set(current, next)
-    if (previous === null) copy = previous = next
-    else previous = previous.next = next
+  let before = new Node()
+  let toNode = before
+
+  for (let fromNode = head; fromNode !== null; fromNode = fromNode.next) {
+    toNode.next = new Node(fromNode.val, null, fromNode.random)
+    toNode = toNode.next
+    map.set(fromNode, toNode)
   }
 
-  for (current = copy; current != null; current = current.next) {
-    if (current.random !== null) current.random = map.get(current.random)
+  for (let node = before.next; node !== null; node = node.next) {
+    if (node.random !== null) {
+      node.random = map.get(node.random)
+    }
   }
 
-  return copy
+  return before.next
 }
 
 // prettier-ignore
@@ -130,14 +130,14 @@ const data = [
     [ [7, null], [13, 0], [11, 4], [10, 2], [1, 0], ], 
     [ [7, null], [13, 0], [11, 4], [10, 2], [1, 0], ],
   ],
-  // [
-  //   [ [1, 1], [2, 1], ], 
-  //   [ [1, 1], [2, 1], ],
-  // ],
-  // [
-  //   [ [3, null], [3, 0], [3, null], ],
-  //   [ [3, null], [3, 0], [3, null], ],
-  // ],
+  [
+    [ [1, 1], [2, 1], ], 
+    [ [1, 1], [2, 1], ],
+  ],
+  [
+    [ [3, null], [3, 0], [3, null], ],
+    [ [3, null], [3, 0], [3, null], ],
+  ],
 ]
 
 // prettier-ignore

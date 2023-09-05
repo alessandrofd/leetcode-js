@@ -103,26 +103,7 @@ const arraysEqual = (a, b) => {
  * @return {Node}
  */
 
-const copyRandomList = (head) => {
-  if (head === null) return null
-
-  const map = new Map()
-  let copy = null,
-    previous = null
-
-  for (current = head; current !== null; current = current.next) {
-    const next = new Node(current.val, null, current.random)
-    map.set(current, next)
-    if (previous === null) copy = previous = next
-    else previous = previous.next = next
-  }
-
-  for (current = copy; current != null; current = current.next) {
-    if (current.random !== null) current.random = map.get(current.random)
-  }
-
-  return copy
-}
+const copyRandomList = (head) => {}
 
 // prettier-ignore
 const data = [
