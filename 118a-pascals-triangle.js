@@ -32,15 +32,16 @@ const arraysEqual = (a, b) => {
  * @param {number} numRows
  * @return {number[][]}
  */
-const generate = (qttyRows) => {
-  const triangle = []
-  triangle.push([1])
-
-  for (let numRow = 1; numRow < qttyRows; numRow++) {
-    const prevRow = triangle[numRow - 1]
+const generate = (numRows) => {
+  const triangle = [[1]]
+  let previous = [1]
+  for (let i = 1; i < numRows; i++) {
     const row = [1]
-    for (let i = 1; i < numRow; i++) row.push(prevRow[i - 1] + prevRow[i])
+    for (let j = 0; j < previous.length - 1; j++) {
+      row.push(previous[j] + previous[j + 1])
+    }
     row.push(1)
+    previous = row
     triangle.push(row)
   }
   return triangle
@@ -57,8 +58,8 @@ const data = [
 ]
 
 for (const func of funcs) {
-  for (const [numRows, expected] of data) {
-    const output = func(numRows)
+  for (const [rows, expected] of data) {
+    const output = func(rows)
     console.log(arraysEqual(output, expected))
   }
 }

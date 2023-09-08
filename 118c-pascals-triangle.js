@@ -32,19 +32,7 @@ const arraysEqual = (a, b) => {
  * @param {number} numRows
  * @return {number[][]}
  */
-const generate = (qttyRows) => {
-  const triangle = []
-  triangle.push([1])
-
-  for (let numRow = 1; numRow < qttyRows; numRow++) {
-    const prevRow = triangle[numRow - 1]
-    const row = [1]
-    for (let i = 1; i < numRow; i++) row.push(prevRow[i - 1] + prevRow[i])
-    row.push(1)
-    triangle.push(row)
-  }
-  return triangle
-}
+const generate = (qttyRows) => {}
 
 // prettier-ignore
 const funcs = [
