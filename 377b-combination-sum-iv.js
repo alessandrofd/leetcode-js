@@ -17,44 +17,13 @@
  * @return {number}
  */
 // Approach 1: Top-Down Dynamic Programming
-const combinationSum4_DP_TopDown = (nums, target) => {
-  memo = new Map()
-  const combs = (nums, remain) => {
-    if (remain == 0) return 1
-    if (memo.has(remain)) return memo.get(remain)
-
-    result = 0
-    for (const num of nums)
-      if (remain - num >= 0) result += combs(nums, remain - num)
-    memo.set(remain, result)
-    return result
-  }
-
-  return combs(nums, target)
-}
+const combinationSum4_DP_TopDown = (nums, target) => {}
 
 // Approach 2: Bottom-Up Dynamic Programming
-const combinationSum4_DP_BottomUp = (nums, target) => {
-  const dp = new Array(target + 1).fill(0)
-  dp[0] = 1
-  for (let i = 1; i <= target; i++)
-    for (const num of nums) if (i - num >= 0) dp[i] += dp[i - num]
-  return dp[target]
-}
+const combinationSum4_DP_BottomUp = (nums, target) => {}
 
 // Approach 2: Bottom-Up Dynamic Programming - optimized
-const combinationSum4_DP_BottomUp_Optimized = (nums, target) => {
-  nums.sort((a, b) => a - b)
-  const dp = new Array(target + 1).fill(0)
-  dp[0] = 1
-  for (let i = 1; i <= target; i++) {
-    for (const num of nums) {
-      if (i - num >= 0) dp[i] += dp[i - num]
-      else break
-    }
-  }
-  return dp[target]
-}
+const combinationSum4_DP_BottomUp_Optimized = (nums, target) => {}
 
 // prettier-ignore
 const funcs = [

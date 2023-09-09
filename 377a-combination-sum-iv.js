@@ -16,51 +16,63 @@
  * @param {number} target
  * @return {number}
  */
-// Approach 1: Top-Down Dynamic Programming
 const combinationSum4_DP_TopDown = (nums, target) => {
-  memo = new Map()
-  const combs = (nums, remain) => {
-    if (remain == 0) return 1
-    if (memo.has(remain)) return memo.get(remain)
+  // Approach 1: Top-Down Dynamic Programming
+  const n = nums.length
+  const memo = new Map([[target, 1]])
+
+  const dfs = (sum) => {
+    if (memo.has(sum)) return memo.get(sum)
+    if (sum > target) return 0
 
     result = 0
-    for (const num of nums)
-      if (remain - num >= 0) result += combs(nums, remain - num)
-    memo.set(remain, result)
+    for (const num of nums) {
+      result += dfs(sum + num)
+    }
+    memo.set(sum, result)
     return result
   }
 
-  return combs(nums, target)
+  return dfs(0)
 }
 
-// Approach 2: Bottom-Up Dynamic Programming
 const combinationSum4_DP_BottomUp = (nums, target) => {
+  // Bottom-Up Dynamic Programming
+  const n = nums.length
   const dp = new Array(target + 1).fill(0)
-  dp[0] = 1
-  for (let i = 1; i <= target; i++)
-    for (const num of nums) if (i - num >= 0) dp[i] += dp[i - num]
-  return dp[target]
-}
+  dp[target] = 1
 
-// Approach 2: Bottom-Up Dynamic Programming - optimized
-const combinationSum4_DP_BottomUp_Optimized = (nums, target) => {
-  nums.sort((a, b) => a - b)
-  const dp = new Array(target + 1).fill(0)
-  dp[0] = 1
-  for (let i = 1; i <= target; i++) {
+  for (let i = target - 1; i >= 0; i--) {
     for (const num of nums) {
-      if (i - num >= 0) dp[i] += dp[i - num]
-      else break
+      if (i + num <= target) {
+        dp[i] += dp[i + num]
+      }
     }
   }
-  return dp[target]
+
+  return dp[0]
+}
+
+const combinationSum4_DP_BottomUp_Optimized = (nums, target) => {
+  // Bottom-Up Dynamic Programming - optimized
+  sorted_nums = nums.slice(0).sort((a, b) => a - b)
+  const n = sorted_nums.length
+
+  const dp = new Array(target + 1).fill(0)
+  dp[target] = 1
+
+  for (let i = target - 1; i >= 0; i--)
+    for (const num of sorted_nums)
+      if (i + num <= target) dp[i] += dp[i + num]
+      else break
+  return dp[0]
 }
 
 // prettier-ignore
 const funcs = [
-  combinationSum4_DP_TopDown,
+  // combinationSum4_DP_TopDown,
   combinationSum4_DP_BottomUp,
-  combinationSum4_DP_BottomUp_Optimized,
+  // combinationSum4_DP_BottomUp_Optimized,
 ]
 
 const data = [
