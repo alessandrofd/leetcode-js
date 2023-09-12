@@ -1,10 +1,26 @@
 /**
+ * A string s is called good if there are no two different characters in s that
+ * have the same frequency.
+ *
+ * Given a string s, return the minimum number of characters you need to delete
+ * to make s good.
+ *
+ * The frequency of a character in a string is the number of times it appears in
+ * the string. For example, in the string "aab", the frequency of 'a' is 2,
+ * while the frequency of 'b' is 1.
+ *
+ * Constraints:
+ *    1 <= s.length <= 10^5
+ *    s contains only lowercase English letters.
+ */
+
+/**
  * @param {string} s
  * @return {number}
  */
 
 // Approach 1: Decrement Each Duplicate Until it is Unique
-const minDeletions_1 = (string) => {
+const minDeletions_decrement_duplicates = (string) => {
   const frequencies = new Array(26).fill(0)
   for (char of string) frequencies[char.charCodeAt(0) - 'a'.charCodeAt(0)]++
 
@@ -21,7 +37,7 @@ const minDeletions_1 = (string) => {
 }
 
 // Approach 2: Priority Queue
-const minDeletions_2 = (string) => {
+const minDeletions_priority_queue = (string) => {
   class MaxHeap {
     constructor() {
       this.data = []
@@ -93,7 +109,7 @@ const minDeletions_2 = (string) => {
 }
 
 // Approach 3: Sorting
-const minDeletions = (string) => {
+const minDeletions_sorting = (string) => {
   const frequencies = new Array(26).fill(0)
   for (char of string) frequencies[char.charCodeAt(0) - 'a'.charCodeAt(0)]++
   frequencies.sort((a, b) => b - a)
@@ -112,11 +128,20 @@ const minDeletions = (string) => {
   return deleteCount
 }
 
-// s = 'aab'
-// Output: 0
-// s = "aaabbbcc"
-// Output: 2
-s = 'ceabaacb'
-// Output: 2
+const funcs = [
+  minDeletions_decrement_duplicates,
+  minDeletions_priority_queue,
+  minDeletions_sorting,
+]
 
-console.log(minDeletions(s))
+const data = [
+  ['aab', 0],
+  ['aaabbbcc', 2],
+  ['ceabaacb', 2],
+]
+
+for (const func of funcs) {
+  for (const [string, expected] of data) {
+    console.log(func(string) === expected)
+  }
+}
