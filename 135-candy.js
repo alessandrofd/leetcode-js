@@ -1,10 +1,30 @@
 /**
+ * There are n children standing in a line. Each child is assigned a rating
+ * value given in the integer array ratings.
+ *
+ * You are giving candies to these children subjected to the following
+ * requirements:
+ *
+ *    Each child must have at least one candy.
+ *
+ *    Children with a higher rating get more candies than their neighbors.
+ *
+ * Return the minimum number of candies you need to have to distribute the
+ * candies to the children.
+ *
+ * Constraints:
+ *    n == ratings.length
+ *    1 <= n <= 2 * 10^4
+ *    0 <= ratings[i] <= 2 * 10^4
+ */
+
+/**
  * @param {number[]} ratings
  * @return {number}
  */
+const candy_brute_force = (ratings) => {
+  // Brute Force
 
-// Approach 1: Brute Force
-const candy_1 = (ratings) => {
   candies = Array(ratings.length).fill(1)
   hasChanged = true
   while (hasChanged) {
@@ -31,8 +51,13 @@ const candy_1 = (ratings) => {
   return candies.reduce((acc, nxt) => acc + nxt)
 }
 
-// Approach 2: Using two arrays
-const candy_2 = (ratings) => {
+/**
+ * @param {number[]} ratings
+ * @return {number}
+ */
+const candy_two_arrays = (ratings) => {
+  // Using two arrays
+
   left2right = Array(ratings.length).fill(1)
   right2left = Array(ratings.length).fill(1)
   for (i = 1; i < ratings.length; i++)
@@ -47,8 +72,13 @@ const candy_2 = (ratings) => {
   return sum
 }
 
-// Approach 3: Using one array
-const candy_3 = (ratings) => {
+/**
+ * @param {number[]} ratings
+ * @return {number}
+ */
+const candy_single_array = (ratings) => {
+  // Approach 3: Using one array
+
   candies = Array(ratings.length).fill(1)
 
   for (i = 1; i < ratings.length; i++)
@@ -65,8 +95,13 @@ const candy_3 = (ratings) => {
   return sum
 }
 
-// Approach 4: Single Pass Approach with Constant Space
-const candy = (ratings) => {
+/**
+ * @param {number[]} ratings
+ * @return {number}
+ */
+const candy_single_pass = (ratings) => {
+  // Single Pass Approach with Constant Space
+
   const count = (n) => (n * (n + 1)) / 2
 
   if (ratings.length <= 1) return ratings.length
@@ -93,13 +128,20 @@ const candy = (ratings) => {
   return candies
 }
 
-ratings = [1, 0, 2]
-// Output: 5
-// Explanation: You can allocate to the first, second and third child with 2, 1, 2 candies respectively.
+const funcs = [
+  candy_brute_force,
+  candy_two_arrays,
+  candy_single_array,
+  candy_single_pass,
+]
 
-ratings = [1, 2, 2]
-// Output: 4
-// Explanation: You can allocate to the first, second and third child with 1, 2, 1 candies respectively.
-// The third child gets 1 candy because it satisfies the above two conditions.
+const data = [
+  [[1, 0, 2], 5],
+  [[1, 2, 2], 4],
+]
 
-console.log(candy(ratings))
+for (const func of funcs) {
+  for (const [ratings, expected] of data) {
+    console.log(func(ratings) === expected)
+  }
+}
