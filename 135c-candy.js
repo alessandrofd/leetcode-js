@@ -60,6 +60,7 @@ const funcs = [
 const data = [
   [[1, 0, 2], 5],
   [[1, 2, 2], 4],
+  [[1, 3, 2, 2, 1], 7],
 ]
 
 for (const func of funcs) {
