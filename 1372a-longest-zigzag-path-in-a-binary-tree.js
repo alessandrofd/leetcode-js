@@ -58,17 +58,35 @@ const buildTree = (array) => {
  * @param {TreeNode} root
  * @return {number}
  */
-const longestZigZag = (root) => {}
+const longestZigZag = (root) => {
+  let longestPath = 0
+
+  const dfs = (node, direction) => {
+    if (!node) return 0
+
+    const left = dfs(node.left, 'left')
+    const right = dfs(node.right, 'right')
+    longestPath = Math.max(longestPath, left, right)
+
+    return (direction === 'left' ? right : left) + 1
+  }
+
+  dfs(root, '')
+  return longestPath
+}
+
+const funcs = [longestZigZag]
 
 // prettier-ignore
-root = [ 1, null, 1, 1, 1, null, null, 1, 1, null, 1, null, null, null, 1, null, 1, ]
-// Output: 3
+const data = [
+  [[ 1, null, 1, 1, 1, null, null, 1, 1, null, 1, null, null, null, 1, null, 1, ], 3],
+  [[1, 1, 1, null, 1, null, null, 1, 1, null, 1], 4],
+  [[1], 0],
+]
 
-root = [1, 1, 1, null, 1, null, null, 1, 1, null, 1]
-// Output: 4
-
-root = [1]
-// Output: 0
-
-const tree = buildTree(root)
-console.log(longestZigZag(tree))
+for (const func of funcs) {
+  for (const [nodes, expected] of data) {
+    const tree = buildTree(nodes)
+    console.log(longestZigZag(tree) === expected)
+  }
+}
