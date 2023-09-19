@@ -23,20 +23,48 @@
  */
 
 import _ from 'lodash'
+import { MaxPriorityQueue } from '@datastructures-js/priority-queue'
 
 /**
  * @param {number[][]} matrix
  * @param {number} numWeakestRows
  * @return {number[]}
  */
-const kWeakestRows = (matrix, numWeakestRows) =>
+const kWeakestRows_sort = (matrix, numWeakestRows) =>
   matrix
     .map((row, i) => [row.reduce((acc, n) => acc + n), i])
     .sort(([a], [b]) => a - b)
     .slice(0, numWeakestRows)
     .map((row) => row[1])
 
-const funcs = [kWeakestRows]
+/**
+ * @param {number[][]} matrix
+ * @param {number} numWeakestRows
+ * @return {number[]}
+ */
+const kWeakestRows_pq = (matrix, numWeakestRows) => {
+  const n = matrix.length
+
+  const pq = new MaxPriorityQueue({
+    priority: (element) => element[1] * 100 + element[0],
+  })
+  for (let i = 0; i < n; i++) {
+    const row = matrix[i]
+    const soldiers = row.reduce((acc, n) => acc + n)
+    pq.enqueue([i, soldiers])
+    if (pq.size() > numWeakestRows) pq.dequeue()
+  }
+
+  const result = []
+  while (pq.size()) result.push(pq.dequeue().element[0])
+  return result.reverse()
+}
+
+// prettier-ignore
+const funcs = [
+  kWeakestRows_sort, 
+  kWeakestRows_pq
+]
 
 const data = [
   [
@@ -61,11 +89,21 @@ const data = [
     2,
     [0, 2],
   ],
+  [
+    [
+      [1, 1, 1, 0, 0, 0, 0],
+      [1, 1, 1, 1, 1, 1, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 0, 0, 0, 0],
+      [1, 1, 1, 1, 1, 1, 1],
+    ],
+    4,
+    [2, 0, 3, 1],
+  ],
 ]
 
 for (const func of funcs) {
   for (const [matrix, numWeakestRows, expected] of data) {
-    console.log(func(matrix, numWeakestRows))
     console.log(_.isEqual(func(matrix, numWeakestRows), expected))
   }
 }

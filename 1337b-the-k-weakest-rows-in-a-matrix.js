@@ -23,15 +23,27 @@
  */
 
 import _ from 'lodash'
+import { MaxPriorityQueue } from '@datastructures-js/priority-queue'
 
 /**
  * @param {number[][]} matrix
  * @param {number} numWeakestRows
  * @return {number[]}
  */
-const kWeakestRows = (matrix, numWeakestRows) => {}
+const kWeakestRows_sort = (matrix, numWeakestRows) => {}
 
-const funcs = [kWeakestRows]
+/**
+ * @param {number[][]} matrix
+ * @param {number} numWeakestRows
+ * @return {number[]}
+ */
+const kWeakestRows_pq = (matrix, numWeakestRows) => {}
+
+// prettier-ignore
+const funcs = [
+  kWeakestRows_sort, 
+  kWeakestRows_pq
+]
 
 const data = [
   [
@@ -55,6 +67,17 @@ const data = [
     ],
     2,
     [0, 2],
+  ],
+  [
+    [
+      [1, 1, 1, 0, 0, 0, 0],
+      [1, 1, 1, 1, 1, 1, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 0, 0, 0, 0],
+      [1, 1, 1, 1, 1, 1, 1],
+    ],
+    4,
+    [2, 0, 3, 1],
   ],
 ]
 
