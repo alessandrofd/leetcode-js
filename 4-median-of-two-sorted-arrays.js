@@ -61,22 +61,21 @@ const findMedianSortedArrays = (nums1, nums2) => {
   return -1
 }
 
-nums1 = [1, 3]
-nums2 = [2]
-// Output: 2.00000
-// Explanation: merged array = [1,2,3] and median is 2.
+// prettier-ignore
+const funcs = [
+  findMedianSortedArrays_mySolution, 
+  // findMedianSortedArrays,
+]
 
-nums1 = [1, 2]
-nums2 = [3, 4]
-// Output: 2.50000
-// Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
+const data = [
+  [[1, 3], [2], 2.0],
+  // [[1, 2], [3, 4], 2.5],
+  // [[0, 0], [0, 0], 0],
+  // [[2], [], 2],
+]
 
-nums1 = [0, 0]
-nums2 = [0, 0]
-// Output: 0
-
-nums1 = [2]
-nums2 = []
-// Output 2
-
-console.log(findMedianSortedArrays(nums1, nums2))
+for (const func of funcs) {
+  for (const [nums1, nums2, expected] of data) {
+    console.log(func(nums1, nums2) === expected)
+  }
+}
