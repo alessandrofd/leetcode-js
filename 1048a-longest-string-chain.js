@@ -29,24 +29,27 @@
 const longestStrChain_topDown_DP = (words) => {
   // Approach 1: Top-Down Dynamic Programming (Recursion + Memoization)
 
-  const set = new Set(words)
-  const memo = new Map()
+  const wordSet = new Set(words)
+  const dp = new Map()
+
   const dfs = (word) => {
-    if (memo.has(word)) return memo.get(word)
-    let maxLength = 1
+    if (dp.has(word)) return dp.get(word)
+
+    let chain = 1
     for (let i = 0; i < word.length; i++) {
-      const newWord = word.slice(0, i) + word.slice(i + 1)
-      if (set.has(newWord)) {
-        const currentLength = 1 + dfs(newWord)
-        maxLength = Math.max(maxLength, currentLength)
+      const pred = word.slice(0, i) + word.slice(i + 1)
+      if (wordSet.has(pred)) {
+        chain = Math.max(chain, dfs(pred) + 1)
       }
     }
-    memo[word] = maxLength
-    return maxLength
+    dp.set(word, chain)
+    return chain
   }
 
   let result = 0
-  for (const word of words) result = Math.max(result, dfs(word))
+  for (const word of words) {
+    result = Math.max(result, dfs(word))
+  }
   return result
 }
 
@@ -57,52 +60,29 @@ const longestStrChain_topDown_DP = (words) => {
 const longestStrChain_bottomUp_DP = (words) => {
   // Approach 2: Bottom-Up Dynamic Programming
 
-  const dp = new Map()
   words.sort((a, b) => a.length - b.length)
-  let longest = 1
-  for (const word of words) {
-    let length = 1
-    for (let i = 0; i < word.length; i++) {
-      const predecessor = word.slice(0, i) + word.slice(i + 1)
-      length = Math.max(length, (dp.get(predecessor) ?? 0) + 1)
-    }
-    dp.set(word, length)
-    longest = Math.max(longest, length)
-  }
-  return longest
-}
-
-/**
- * @param {string[]} words
- * @return {number}
- */
-const longestStrChain_discussion = (words) => {
-  // Discussion
-
-  const sets = Array.from({ length: 17 }, (_) => new Set())
-  for (const word of words) sets[word.length].add(word)
   const dp = new Map()
-  let best = 1
-  for (let i = 16; i; i--) {
-    if (!sets[i - 1].size) continue
-    for (const word of sets[i]) {
-      let wVal = dp.get(word) ?? 1
-      for (let j = 0; j < word.length; j++) {
-        const pred = word.slice(0, j) + word.slice(j + 1)
-        if (sets[i - 1].has(pred) && wVal >= (dp.get(pred) ?? 1)) {
-          dp.set(pred, wVal + 1)
-          best = Math.max(best, wVal + 1)
-        }
+
+  let longestChain = 0
+  for (const word of words) {
+    let chain = 1
+    for (let i = 0; i < word.length; i++) {
+      const pred = word.slice(0, i) + word.slice(i + 1)
+      if (dp.has(pred)) {
+        chain = Math.max(chain, dp.get(pred) + 1)
       }
     }
+    dp.set(word, chain)
+    longestChain = Math.max(longestChain, chain)
   }
-  return best
+
+  return longestChain
 }
 
+// prettier-ignore
 const funcs = [
-  longestStrChain_topDown_DP,
-  longestStrChain_bottomUp_DP,
-  longestStrChain_discussion,
+  // longestStrChain_topDown_DP, 
+  longestStrChain_bottomUp_DP
 ]
 
 const data = [
