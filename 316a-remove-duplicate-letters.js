@@ -12,19 +12,27 @@
  * @param {string} s
  * @return {string}
  */
+const removeDuplicateLetters = (str) => {
+  const arr = str.split('')
 
-const removeDuplicateLetters = (string) => {
+  const lastIndex = new Map()
+  arr.forEach((char, i) => lastIndex.set(char, i))
+
+  const seen = new Set()
   const stack = []
-  for (let i = 0; i < string.length; i++) {
-    if (stack.indexOf(string[i]) > -1) continue
-    while (
-      stack.length > 0 &&
-      stack[stack.length - 1] > string[i] &&
-      string.indexOf(stack[stack.length - 1], i) > -1
-    )
+  let last = ''
+  arr.forEach((current, i) => {
+    if (seen.has(current)) return
+    while (stack.length > 0 && last > current && lastIndex.get(last) > i) {
       stack.pop()
-    stack.push(string[i])
-  }
+      seen.delete(last)
+      last = stack.at(-1)
+    }
+    stack.push(current)
+    seen.add(current)
+    last = current
+  })
+
   return stack.join('')
 }
 
