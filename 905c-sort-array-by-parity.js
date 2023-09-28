@@ -15,25 +15,17 @@ import _ from 'lodash'
  * @param {number[]} nums
  * @return {number[]}
  */
-const sortArrayByParity_two_arrays = (nums) => {
-  const odds = []
-  const evens = []
-  for (const num of nums) {
-    if (num % 2) odds.push(num)
-    else evens.push(num)
-  }
-  return [...evens, ...odds]
-}
+const sortArrayByParity_swap = (nums) => {}
 
 /**
  * @param {number[]} nums
  * @return {number[]}
  */
-const sortArrayByParity_sort = (nums) => nums.sort((a, b) => (a % 2) - (b % 2))
+const sortArrayByParity_sort = (nums) => {}
 
 // prettier-ignore
 const funcs = [
-  sortArrayByParity_two_arrays, 
+  sortArrayByParity_swap, 
   sortArrayByParity_sort,
 ]
 
