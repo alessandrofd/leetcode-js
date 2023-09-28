@@ -58,7 +58,22 @@ const arraysEqual = (a, b) => {
  * @param {number} right
  * @return {ListNode}
  */
-const reverseBetween = (head, left, right) => {}
+const reverseBetween = (head, left, right) => {
+  const before = new ListNode(-1, head)
+  let previous = before
+
+  // Os índices left e right são 1-based
+  for (let i = 1; i < left; i++) previous = previous.next
+
+  const first = previous.next
+  for (let i = left; i < right; i++) {
+    const next = first.next
+    first.next = next.next
+    next.next = previous.next
+    previous.next = next
+  }
+  return before.next
+}
 
 // prettier-ignore
 const funcs = [
