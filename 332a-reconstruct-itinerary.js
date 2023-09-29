@@ -29,7 +29,29 @@ import _ from 'lodash'
  * @param {string[][]} tickets
  * @return {string[]}
  */
-const findItinerary = (tickets) => {}
+const findItinerary = (tickets) => {
+  const numFlights = tickets.length
+
+  const flights = new Map()
+  for (const [departure, destination] of tickets) {
+    if (!flights.has(departure)) flights.set(departure, [])
+    flights.get(departure).push(destination)
+  }
+
+  for (const destinations of flights.values()) destinations.sort().reverse()
+
+  const itinerary = []
+
+  const visit = (airport) => {
+    while (flights.has(airport) && flights.get(airport).length > 0) {
+      visit(flights.get(airport).pop())
+    }
+    itinerary.push(airport)
+  }
+
+  visit('JFK')
+  return itinerary.reverse()
+}
 
 // prettier-ignore
 const funcs = [
@@ -55,6 +77,40 @@ const data = [
       ['ATL', 'SFO'],
     ],
     ['JFK', 'ATL', 'JFK', 'SFO', 'ATL', 'SFO'],
+  ],
+  [
+    [
+      ['JFK', 'KUL'],
+      ['JFK', 'NRT'],
+      ['NRT', 'JFK'],
+    ],
+    ['JFK', 'NRT', 'JFK', 'KUL'],
+  ],
+  [
+    [
+      ['EZE', 'TIA'],
+      ['EZE', 'HBA'],
+      ['AXA', 'TIA'],
+      ['JFK', 'AXA'],
+      ['ANU', 'JFK'],
+      ['ADL', 'ANU'],
+      ['TIA', 'AUA'],
+      ['ANU', 'AUA'],
+      ['ADL', 'EZE'],
+      ['ADL', 'EZE'],
+      ['EZE', 'ADL'],
+      ['AXA', 'EZE'],
+      ['AUA', 'AXA'],
+      ['JFK', 'AXA'],
+      ['AXA', 'AUA'],
+      ['AUA', 'ADL'],
+      ['ANU', 'EZE'],
+      ['TIA', 'ADL'],
+      ['EZE', 'ANU'],
+      ['AUA', 'ANU'],
+    ],
+    // prettier-ignore
+    [ 'JFK', 'AXA', 'AUA', 'ADL', 'ANU', 'AUA', 'ANU', 'EZE', 'ADL', 'EZE', 'ANU', 'JFK', 'AXA', 'EZE', 'TIA', 'AUA', 'AXA', 'TIA', 'ADL', 'EZE', 'HBA', ],
   ],
 ]
 
