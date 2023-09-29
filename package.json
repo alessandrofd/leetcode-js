@@ -8,5 +8,6 @@
   },
   "scripts": {
     "test": "jest"
-  }
+  },
+  "type": "module"
 }
