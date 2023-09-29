@@ -18,17 +18,19 @@
  * @return {boolean}
  */
 const isMonotonic = (nums) => {
-  if (nums.length === 1) return true
-
+  const n = nums.length
   let i = 1
-  while (i < nums.length && nums[i - 1] === nums[i]) i++
+  while (i < n && nums[i] === nums[i - 1]) i += 1
 
   const compare =
-    nums[i - 1] > nums[i]
-      ? (a, b) => (a >= b ? true : false)
-      : (a, b) => (b >= a ? true : false)
-  for (; i < nums.length; i++) if (!compare(nums[i - 1], nums[i])) return false
+    nums[i - 1] < nums[i]
+      ? (a, b) => (a <= b ? true : false)
+      : (a, b) => (a >= b ? true : false)
 
+  while (i < n) {
+    if (!compare(nums[i - 1], nums[i])) return false
+    i += 1
+  }
   return true
 }
 

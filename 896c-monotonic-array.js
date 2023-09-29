@@ -17,20 +17,7 @@
  * @param {number[]} nums
  * @return {boolean}
  */
-const isMonotonic = (nums) => {
-  if (nums.length === 1) return true
-
-  let i = 1
-  while (i < nums.length && nums[i - 1] === nums[i]) i++
-
-  const compare =
-    nums[i - 1] > nums[i]
-      ? (a, b) => (a >= b ? true : false)
-      : (a, b) => (b >= a ? true : false)
-  for (; i < nums.length; i++) if (!compare(nums[i - 1], nums[i])) return false
-
-  return true
-}
+const isMonotonic = (nums) => {}
 
 // prettier-ignore
 const funcs = [
