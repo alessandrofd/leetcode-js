@@ -18,7 +18,30 @@
  * @param {number[]} nums2
  * @return {number}
  */
-const findMedianSortedArrays_merge_sort = (nums1, nums2) => {}
+const findMedianSortedArrays_merge_sort = (nums1, nums2) => {
+  const n = nums1.length + nums2.length
+  const mid = Math.floor(n / 2)
+
+  let [previous, current] = [0, 0]
+  for (let i = 0, i1 = 0, i2 = 0; i <= mid; i++) {
+    previous = current
+    if ((nums1[i1] ?? Infinity) <= (nums2[i2] ?? Infinity)) {
+      current = nums1[i1]
+      i1 += 1
+    } else {
+      current = nums2[i2]
+      i2 += 1
+    }
+  }
+
+  nums1
+  nums2
+  mid
+  current
+  previous
+  if (n % 2) return current
+  return (previous + current) / 2
+}
 
 /**
  * @param {number[]} nums1
@@ -75,6 +98,40 @@ const findMedianSortedArrays_binSearch = (nums1, nums2) => {
   esquerda, o ponteiro da direita (hi = mid). Este processo é repetido até que a 
   faixa de uma das sequências seja completamente consumida (lo >= hi).
 */
+
+  const binSearch = (target, lo1, hi1, lo2, hi2) => {
+    if (lo1 >= hi1) return nums2[target - lo1]
+    if (lo2 >= hi2) return nums1[target - lo2]
+
+    const mid1 = lo1 + Math.floor((hi1 - lo1) / 2)
+    const mid2 = lo2 + Math.floor((hi2 - lo2) / 2)
+    const mid = mid1 + mid2
+
+    const num1 = nums1[mid1]
+    const num2 = nums2[mid2]
+
+    if (target > mid) {
+      if (num1 < num2) {
+        return binSearch(target, mid1 + 1, hi1, lo2, hi2)
+      } else {
+        return binSearch(target, lo1, hi1, mid2 + 1, hi2)
+      }
+    } else {
+      if (num1 > num2) {
+        return binSearch(target, lo1, mid1, lo2, hi2)
+      } else {
+        return binSearch(target, lo1, hi1, lo2, mid2)
+      }
+    }
+  }
+
+  const n1 = nums1.length
+  const n2 = nums2.length
+  const n = n1 + n2
+  const mid = Math.floor(n / 2)
+
+  if (n % 2) return binSearch(mid, 0, n1, 0, n2)
+  return (binSearch(mid - 1, 0, n2, 0, n2) + binSearch(mid, 0, n1, 0, n2)) / 2
 }
 
 /**
@@ -99,13 +156,48 @@ const findMedianSortedArrays_partitions = (nums1, nums2) => {
   esquerda permanece constante e igual à metade de todos os elementos.
 
   Uma vez a partição esteja correta, podemos extrair delas os valores 
-  ecessários para o cálculo da mediana. O maior valor das partições à esquerda e 
+  necessários para o cálculo da mediana. O maior valor das partições à esquerda e 
   o menor das partições à direita, considerando que as partições são 
   caracterizadas pelos seus valores limítrofes, são usados. No caso de uma 
   quantidade de elementos ímpar, basta o valor das partições à esquerda. Caso 
   contrário, devemos fazer uma média entre os valores das partiçãoes à esquerda 
   e da direita.
   */
+
+  const n1 = nums1.length
+  const n2 = nums2.length
+
+  if (n1 > n2) return findMedianSortedArrays_partitions(nums2, nums1)
+
+  const n = n1 + n2
+  const mid = Math.ceil(n / 2)
+
+  let left = 0
+  let right = n1
+  while (left <= right) {
+    const part1 = left + Math.floor((right - left) / 2)
+    const part2 = mid - part1
+
+    const maxLeft1 = part1 === 0 ? -Infinity : nums1[part1 - 1]
+    const minRight1 = part1 === n1 ? Infinity : nums1[part1]
+    const maxLeft2 = part2 === 0 ? -Infinity : nums2[part2 - 1]
+    const minRight2 = part2 === n2 ? Infinity : nums2[part2]
+
+    if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1) {
+      if (n % 2) return Math.max(maxLeft1, maxLeft2)
+      else
+        return (
+          (Math.max(maxLeft1, maxLeft2) + Math.min(minRight1, minRight2)) / 2
+        )
+    }
+
+    if (maxLeft1 > minRight2) {
+      right = part1 - 1
+    } else {
+      // maxLeft2 > minRight1
+      left = part1 + 1
+    }
+  }
 }
 
 // prettier-ignore
