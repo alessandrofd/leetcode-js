@@ -14,12 +14,7 @@
  * @param {string} s
  * @return {string}
  */
-const reverseWords = (sentence) => {
-  return sentence
-    .split(' ')
-    .map((word) => [...word].reverse().join(''))
-    .join(' ')
-}
+const reverseWords = (sentence) => {}
 
 // prettier-ignore
 const funcs = [
