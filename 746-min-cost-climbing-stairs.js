@@ -1,33 +1,21 @@
 /**
+ * You are given an integer array cost where cost[i] is the cost of ith step
+ * on a staircase. Once you pay the cost, you can either climb one or two steps.
+ *
+ * You can either start from the step with index 0, or the step with index 1.
+ *
+ * Return the minimum cost to reach the top of the floor.
+ *
+ * Constraints:
+ *    2 <= cost.length <= 1000
+ *    0 <= cost[i] <= 999
+ */
+
+/**
  * @param {number[]} cost
  * @return {number}
  */
-// Recursion - Time Limit Exceeded
-const minCostClimbingStairs_recursion = (cost) => {
-  const climb = (stair) => {
-    if (stair < 0) return 0
-    return (cost[stair] ?? 0) + Math.min(climb(stair - 1), climb(stair - 2))
-  }
-
-  return climb(cost.length)
-}
-
-// Recursion + memoization
-const minCostClimbingStairs_recursion_memo = (cost) => {
-  const memo = new Array(cost.length + 1)
-
-  const climb = (stair) => {
-    if (stair < 0) return 0
-    if (memo[stair]) return memo[stair]
-    return (memo[stair] =
-      (cost[stair] ?? 0) + Math.min(climb(stair - 1), climb(stair - 2)))
-  }
-
-  return climb(cost.length)
-}
-
-// Approach 1: Bottom-Up Dynamic Programming (Tabulation)
-const minCostClimbingStairs_1 = (cost) => {
+const minCostClimbingStairs_dp_bottom_up = (cost) => {
   const minCost = new Array(cost.length + 1).fill(0)
 
   for (let i = 2; i < minCost.length; i++) {
@@ -39,8 +27,11 @@ const minCostClimbingStairs_1 = (cost) => {
   return minCost[minCost.length - 1]
 }
 
-// Approach 2: Top-Down Dynamic Programming (Recursion + Memoization)
-const minCostClimbingStairs_2 = (cost) => {
+/**
+ * @param {number[]} cost
+ * @return {number}
+ */
+const minCostClimbingStairs_dp_top_down = (cost) => {
   const memo = new Map()
 
   const findMinCost = (i) => {
@@ -56,13 +47,16 @@ const minCostClimbingStairs_2 = (cost) => {
   return findMinCost(cost.length)
 }
 
-// Approach 3: Bottom-Up, Constant Space
-const minCostClimbingStairs_3 = (cost) => {
+/**
+ * @param {number[]} cost
+ * @return {number}
+ */
+const minCostClimbingStairs_dp_bottom_up_constant_space = (cost) => {
   let downOne = 0
   let downTwo = 0
 
   for (let i = 2; i < cost.length + 1; i++) {
-    temp = downOne
+    let temp = downOne
     downOne = Math.min(downOne + cost[i - 1], downTwo + cost[i - 2])
     downTwo = temp
   }
@@ -70,17 +64,31 @@ const minCostClimbingStairs_3 = (cost) => {
   return downOne
 }
 
-// Discussion board -  sgallivan
-const minCostClimbingStairs = (cost) => {
+/**
+ * @param {number[]} cost
+ * @return {number}
+ */
+const minCostClimbingStairs_discussion_board = (cost) => {
   for (let i = cost.length - 3; ~i; i--)
     cost[i] += Math.min(cost[i + 1], cost[i + 2])
   return Math.min(cost[0], cost[1])
 }
 
-cost = [10, 15, 20]
-// Output: 15
+// prettier-ignore
+const funcs = [
+  minCostClimbingStairs_dp_top_down,
+  minCostClimbingStairs_dp_bottom_up,
+  minCostClimbingStairs_dp_bottom_up_constant_space,
+  minCostClimbingStairs_discussion_board,
+]
 
-cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]
-// Output: 6
+const data = [
+  [[10, 15, 20], 15],
+  [[1, 100, 1, 1, 1, 100, 1, 1, 100, 1], 6],
+]
 
-console.log(minCostClimbingStairs(cost))
+for (const func of funcs) {
+  for (const [cost, expected] of data) {
+    console.log(func(cost) === expected)
+  }
+}
