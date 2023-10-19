@@ -15,14 +15,16 @@
  * @return {boolean}
  */
 const backspaceCompare = (s, t) => {
-  const backspace = (s) => {
-    const arr = [...s]
+  const backspace = (str) => {
+    const arr = str.split('')
     const result = []
-    for (const c of arr)
+    for (const c of arr) {
       if (c === '#') result.pop()
       else result.push(c)
+    }
     return result.join('')
   }
+
   return backspace(s) === backspace(t)
 }
 

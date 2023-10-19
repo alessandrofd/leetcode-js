@@ -14,17 +14,7 @@
  * @param {string} t
  * @return {boolean}
  */
-const backspaceCompare = (s, t) => {
-  const backspace = (s) => {
-    const arr = [...s]
-    const result = []
-    for (const c of arr)
-      if (c === '#') result.pop()
-      else result.push(c)
-    return result.join('')
-  }
-  return backspace(s) === backspace(t)
-}
+const backspaceCompare = (s, t) => {}
 
 // prettier-ignore
 const funcs = [
