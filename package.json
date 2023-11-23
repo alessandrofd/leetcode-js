@@ -1,13 +1,13 @@
 {
-  "dependencies": {
-    "@datastructures-js/priority-queue": "^5.3.0",
-    "lodash": "^4.17.21"
-  },
-  "devDependencies": {
-    "jest": "^29.6.3"
-  },
-  "scripts": {
-    "test": "jest"
-  },
-  "type": "module"
+    "dependencies": {
+        "@datastructures-js/priority-queue": "^5.3.0",
+        "lodash": "^4.17.21"
+    },
+    "devDependencies": {
+        "jest": "^29.6.3"
+    },
+    "scripts": {
+        "test": "jest"
+    },
+    "type": "module"
 }
